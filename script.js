@@ -25,6 +25,18 @@ function loadLogoAsBase64() {
     const wm = document.getElementById('watermarkImg');
     if (wm) wm.src = dataUrl;
   };
+
+  const card = new Image();
+  card.crossOrigin = 'anonymous';
+  card.src = 'Lenzora Card.png';
+  card.onload = function() {
+    const canvas = document.createElement('canvas');
+    canvas.width = card.naturalWidth;
+    canvas.height = card.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(card, 0, 0);
+    localStorage.setItem('lenzoraCard', canvas.toDataURL('image/png'));
+  };
 }
 
 function addItem() {
@@ -166,8 +178,8 @@ function generateInvoiceHTML() {
       <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:center;background:#fff">${i + 1}</td>
       <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0;background:#fff">${desc}</td>
       <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:center;background:#fff">${qty}</td>
-      <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:right;background:#fff">$${parseFloat(rate).toFixed(2)}</td>
-      <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:right;font-weight:600;background:#fff">$${amt}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:right;background:#fff">LKR ${parseFloat(rate).toFixed(2)}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:right;font-weight:600;background:#fff">LKR ${amt}</td>
     </tr>`;
   });
 
@@ -219,18 +231,21 @@ function generateInvoiceHTML() {
         </div>
         <div style="background:linear-gradient(135deg,#1a1a2e,#2d2d5e);border-radius:12px;padding:20px 24px">
           <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:14px;color:#dfe6e9">
-            <span>Subtotal</span><span>$${getVal('subtotal')}</span>
+            <span>Subtotal</span><span>LKR ${getVal('subtotal')}</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:14px;color:#dfe6e9">
-            <span>Discount (${get('discount')}%)</span><span>-$${discountAmt.toFixed(2)}</span>
+            <span>Discount (${get('discount')}%)</span><span>-LKR ${discountAmt.toFixed(2)}</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:14px;color:#dfe6e9">
-            <span>Tax (${get('tax')}%)</span><span>$${taxAmt.toFixed(2)}</span>
+            <span>Tax (${get('tax')}%)</span><span>LKR ${taxAmt.toFixed(2)}</span>
           </div>
           <div style="display:flex;justify-content:space-between;border-top:2px solid rgba(162,155,254,0.3);margin-top:6px;padding-top:14px;font-size:20px;font-weight:800;color:#fff">
-            <span>Total</span><span style="color:#a29bfe">$${getVal('total')}</span>
+            <span>Total</span><span style="color:#a29bfe">LKR ${getVal('total')}</span>
           </div>
         </div>
+      </div>
+      <div style="text-align:center;margin-top:24px;position:relative;z-index:1">
+        <img src="${localStorage.getItem('lenzoraCard') || 'Lenzora Card.png'}" alt="Payment Cards" style="max-width:280px;width:100%;height:auto;display:inline-block;border-radius:8px">
       </div>
     </div>
   `;
