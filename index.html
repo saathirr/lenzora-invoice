@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Lenzora">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Lenzora Invoice</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="invoice-wrapper" id="invoiceBody">
+      <img src="Lenzora logo.png" alt="" class="watermark-logo" id="watermarkImg">
+
+      <div class="invoice-header">
+        <div class="logo-area">
+          <img src="Lenzora logo.png" alt="Lenzora Logo" class="logo-img">
+        </div>
+        <div class="doc-info">
+          <div class="form-group">
+            <label>Invoice No.</label>
+            <input type="text" id="invoiceNo" readonly>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="invoiceDate">
+          </div>
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" id="dueDate">
+          </div>
+        </div>
+      </div>
+
+      <div class="parties">
+        <div class="to">
+          <h3>Bill To</h3>
+          <input type="text" id="clientName" placeholder="Client Name">
+          <input type="text" id="clientAddress" placeholder="Address">
+          <input type="text" id="clientEmail" placeholder="Email">
+          <input type="text" id="clientPhone" placeholder="Phone">
+        </div>
+      </div>
+
+      <div class="items-section">
+        <table id="itemsTable">
+          <thead>
+            <tr>
+              <th class="col-no">#</th>
+              <th class="col-desc">Description</th>
+              <th class="col-qty">Qty</th>
+              <th class="col-rate">Rate</th>
+              <th class="col-amount">Amount</th>
+              <th class="col-action"></th>
+            </tr>
+          </thead>
+          <tbody id="itemsBody">
+          </tbody>
+        </table>
+        <button class="btn-add" onclick="addItem()">+ Add Item</button>
+      </div>
+
+      <div class="totals-section">
+        <div class="totals-left">
+          <div class="form-group">
+            <label>Notes</label>
+            <textarea id="notes" rows="3" placeholder="Thank you for your business"></textarea>
+          </div>
+        </div>
+        <div class="totals-right">
+          <div class="total-row">
+            <span>Subtotal</span>
+            <span id="subtotal">0.00</span>
+          </div>
+          <div class="total-row">
+            <span>Discount (%)</span>
+            <span><input type="number" id="discount" value="0" min="0" max="100" oninput="calcTotals()"> %</span>
+          </div>
+          <div class="total-row">
+            <span>Tax (%)</span>
+            <span><input type="number" id="tax" value="0" min="0" max="100" oninput="calcTotals()"> %</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>Total</span>
+            <span id="total">0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-preview" onclick="previewInvoice()">Preview</button>
+        <button class="btn-pdf" onclick="savePDF()">Save PDF</button>
+        <button class="btn-print" onclick="printInvoice()">Print</button>
+        <button class="btn-reset" onclick="resetInvoice()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="previewModal">
+    <div class="modal-content">
+      <span class="close" onclick="closePreview()">&times;</span>
+      <div id="previewArea"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
